@@ -63,8 +63,33 @@ void MainGame::createMap()
     floor->transform->localScale = Vector3(5, 1, 5);
     floor->transform->localPosition = Vector3(0, -0.5f, 0);
 
+    // 床１（右
+    auto rb1 = make_unique<Rigidbody>();
+    rb1->gravityScale = 0;
+    rb1->mass = numeric_limits<float>::infinity();
+    auto floor1 = make_unique<GameObject>(u8"床１",
+        CubeRenderer::create<VertexPNT>(floorMat),
+        move(rb1),
+        make_unique<AABBCollider>());
+    floor1->transform->localScale = Vector3(5, 1, 5);
+    floor1->transform->localPosition = Vector3(5, -0.5f, 0);
+
+    // 床２（左
+    auto rb2 = make_unique<Rigidbody>();
+    rb2->gravityScale = 0;
+    rb2->mass = numeric_limits<float>::infinity();
+    auto floor2 = make_unique<GameObject>(u8"床２",
+        CubeRenderer::create<VertexPNT>(floorMat),
+        move(rb2),
+        make_unique<AABBCollider>());
+    floor2->transform->localScale = Vector3(5, 1, 5);
+    floor2->transform->localPosition = Vector3(-5, -0.5f, 0);
+
+
     // 親をマップにする
     Transform::SetParent(move(floor), map->transform);
+    Transform::SetParent(move(floor1), map->transform);
+    Transform::SetParent(move(floor2), map->transform);
 
     // 壁
     rb = make_unique<Rigidbody>();
@@ -80,7 +105,17 @@ void MainGame::createMap()
     // 親をマップにする
     Transform::SetParent(move(wall), map->transform);
 
+    // コインオブジェクトを作成
+    auto coin = make_unique<GameObject>(u8"Coin",
+        SphereRenderer::create<VertexPT>(u8"resource/Albedo.hlsl", u8"resource/wall.png"),
+        make_unique<Rigidbody>(),
+        make_unique<SphereCollider>(Vector3(0, -0.1f, 0), 0.4f));
+    coin->transform->localPosition = Vector3(2, 1, 0);
+    Transform::SetParent(move(coin), map->transform);
+
+
     mapObj = move(map);
+
 }
 
 
@@ -115,7 +150,7 @@ unique_ptr<UniDx::Scene> MainGame::CreateScene()
     font->Load(u8"resource/M PLUS 1.spritefont");
     auto textMesh = make_unique<TextMesh>();
     textMesh->font = font;
-    textMesh->text = u8"WASD:いどう\nIJKL:カメラ";
+    textMesh->text = u8"WASD:いどう\nIJKL:カメラ\nSpace:ジャンプ";
 
     auto textObj = make_unique<GameObject>(u8"テキスト", textMesh);
     textObj->transform->localPosition = Vector3(100, 20, 0);

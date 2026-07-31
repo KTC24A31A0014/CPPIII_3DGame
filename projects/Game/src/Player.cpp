@@ -15,6 +15,7 @@ using namespace UniDx;
 namespace
 {
     const StringId CoinName = StringId::intern("Coin");
+    const float jumpSpeed = 100.0f;
 }
 
 
@@ -71,6 +72,17 @@ void Player::Update()
     {
         rb->rotation = Quaternion::Euler(0, vAngle, 0);
     }
+
+    // jump
+    if (Input::GetKeyDown(Keyboard::Space))
+    {
+        velocity.y = jumpSpeed;
+    }
+    else
+    {
+        velocity.y = rb->linearVelocity.y;
+    }
+    rb->linearVelocity = velocity;
 }
 
 
