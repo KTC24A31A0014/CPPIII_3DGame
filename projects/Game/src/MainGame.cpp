@@ -98,7 +98,7 @@ void MainGame::createMap()
     floor3->transform->localPosition = Vector3(0, -0.5f, 15);
     floor3->AddComponent<MovingFloor>();
 
-    // 床４（ゴール
+    // 床４（動く床から飛び移る固定された床
     auto rb4 = make_unique<Rigidbody>();
     rb4->gravityScale = 0;
     rb4->mass = numeric_limits<float>::infinity();
@@ -175,7 +175,7 @@ unique_ptr<UniDx::Scene> MainGame::CreateScene()
     font->Load(u8"resource/M PLUS 1.spritefont");
     auto textMesh = make_unique<TextMesh>();
     textMesh->font = font;
-    textMesh->text = u8"WASD:いどう\nIJKL:カメラ\nSpace:ジャンプ";
+    textMesh->text = u8"WASD:いどう\nマウス:カメラ\nSpace:ジャンプ";
 
     auto textObj = make_unique<GameObject>(u8"テキスト", textMesh);
     textObj->transform->localPosition = Vector3(100, 20, 0);
