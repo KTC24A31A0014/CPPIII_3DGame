@@ -165,7 +165,9 @@
     <ClInclude Include="include\UniDx\GameObject_impl.h" />
     <ClInclude Include="include\UniDx\GltfModel.h" />
     <ClInclude Include="include\UniDx\Image.h" />
-    <ClInclude Include="include\UniDx\Input.h" />
+    <ClInclude Include="include\UniDx\Input.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="include\UniDx\Light.h" />
     <ClInclude Include="include\UniDx\LightManager.h" />
     <ClInclude Include="include\UniDx\Material.h" />

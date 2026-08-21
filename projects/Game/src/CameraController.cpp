@@ -5,6 +5,8 @@
 
 #include "Player.h"
 
+#include <algorithm>
+
 
 using namespace DirectX;
 using namespace UniDx;
@@ -24,23 +26,14 @@ void CameraController::OnEnable()
 
 void CameraController::Update()
 {
-    const float angleSpeed = 90.0f;
-    if (Input::GetKey(Keyboard::J))
-    {
-        yaw += angleSpeed * Time::deltaTime;
-    }
-    if (Input::GetKey(Keyboard::L))
-    {
-        yaw -= angleSpeed * Time::deltaTime;
-    }
-    if (Input::GetKey(Keyboard::I))
-    {
-        pitch = std::min(pitch + angleSpeed * Time::deltaTime, 90.0f);
-    }
-    if (Input::GetKey(Keyboard::K))
-    {
-        pitch = std::max(pitch - angleSpeed * Time::deltaTime, 0.0f);
-    }
+    OutputDebugStringA("CameraController Update called\n");
+
+    const float mouseSensi = 0.2f;
+    auto mouseState = Input::GetMouseState();
+
+    yaw -= mouseState.x * mouseSensi;
+    pitch = std::clamp(pitch - mouseState.y * mouseSensi, 0.0f, 90.0f);
+
     Quaternion rot = Quaternion::Euler(pitch, yaw, 0.0f);
     transform->rotation = rot;
     transform->position = (Vector3::forward * rot) * -length + player->transform->position;

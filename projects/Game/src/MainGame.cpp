@@ -16,6 +16,7 @@
 #include "CameraController.h"
 #include "Player.h"
 #include "LightController.h"
+#include "MovingFloor.h"
 
 #include <thread>
 #include "MainGame.h"
@@ -60,7 +61,7 @@ void MainGame::createMap()
         CubeRenderer::create<VertexPNT>(floorMat),
         move(rb),
         make_unique<AABBCollider>());
-    floor->transform->localScale = Vector3(5, 1, 5);
+    floor->transform->localScale = Vector3(15, 1, 5);
     floor->transform->localPosition = Vector3(0, -0.5f, 0);
 
     // 床１（右
@@ -72,7 +73,7 @@ void MainGame::createMap()
         move(rb1),
         make_unique<AABBCollider>());
     floor1->transform->localScale = Vector3(5, 1, 5);
-    floor1->transform->localPosition = Vector3(5, -0.5f, 0);
+    floor1->transform->localPosition = Vector3(5, -0.5f, 5);
 
     // 床２（左
     auto rb2 = make_unique<Rigidbody>();
@@ -83,13 +84,37 @@ void MainGame::createMap()
         move(rb2),
         make_unique<AABBCollider>());
     floor2->transform->localScale = Vector3(5, 1, 5);
-    floor2->transform->localPosition = Vector3(-5, -0.5f, 0);
+    floor2->transform->localPosition = Vector3(-5, -0.5f, 5);
 
+    // 床３（ジャンプして渡る
+        auto rb3 = make_unique<Rigidbody>();
+    rb3->gravityScale = 0;
+    rb3->mass = numeric_limits<float>::infinity();
+    auto floor3 = make_unique<GameObject>(u8"床３",
+        CubeRenderer::create<VertexPNT>(floorMat),
+        move(rb3),
+        make_unique<AABBCollider>());
+    floor3->transform->localScale = Vector3(5, 1, 5);
+    floor3->transform->localPosition = Vector3(0, -0.5f, 15);
+    floor3->AddComponent<MovingFloor>();
+
+    // 床４（ゴール
+    auto rb4 = make_unique<Rigidbody>();
+    rb4->gravityScale = 0;
+    rb4->mass = numeric_limits<float>::infinity();
+    auto floor4 = make_unique<GameObject>(u8"床４",
+        CubeRenderer::create<VertexPNT>(floorMat),
+        move(rb4),
+        make_unique<AABBCollider>());
+    floor4->transform->localScale = Vector3(15, 1, 5);
+    floor4->transform->localPosition = Vector3(0, -0.5f, 25);
 
     // 親をマップにする
     Transform::SetParent(move(floor), map->transform);
     Transform::SetParent(move(floor1), map->transform);
     Transform::SetParent(move(floor2), map->transform);
+    Transform::SetParent(move(floor3), map->transform);
+    Transform::SetParent(move(floor4), map->transform);
 
     // 壁
     rb = make_unique<Rigidbody>();

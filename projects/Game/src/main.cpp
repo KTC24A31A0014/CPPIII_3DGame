@@ -6,6 +6,7 @@
 
 #include <UniDx.h>
 #include <UniDx/PlayerLoop.h>
+#include <UniDx/Input.h>
 
 #define MAX_LOADSTRING 100
 
@@ -100,6 +101,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    // UniDxエンジンのインスタンス作成
    PlayerLoop::create();
    PlayerLoop::getInstance()->Initialize(hWnd);
+   Input::GetMouse()->SetWindow(hWnd);
+   Input::GetMouse()->SetMode(DirectX::Mouse::MODE_RELATIVE);
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
@@ -166,6 +169,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_SYSKEYUP:
         PlayerLoop::getInstance()->ProcessKeyboardMessage(message, wParam, lParam);
         break;
+
+    case WM_INPUT:
+    case WM_MOUSEMOVE:
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONUP:
+    case WM_RBUTTONDOWN:
+    case WM_RBUTTONUP:
+    case WM_MBUTTONDOWN:
+    case WM_MBUTTONUP:
+    case WM_MOUSEWHEEL:
+    case WM_XBUTTONDOWN:
+    case WM_XBUTTONUP:
+    case WM_MOUSEHOVER:
+        DirectX::Mouse::ProcessMessage(message, wParam, lParam);
+        break;
+
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }

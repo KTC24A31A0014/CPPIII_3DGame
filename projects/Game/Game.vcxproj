@@ -224,6 +224,7 @@
     <ClInclude Include="include\LightController.h" />
     <ClInclude Include="include\main.h" />
     <ClInclude Include="include\MainGame.h" />
+    <ClInclude Include="include\MovingFloor.h" />
     <ClInclude Include="include\Player.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="src\LightController.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MainGame.cpp" />
+    <ClCompile Include="src\MovingFloor.cpp" />
     <ClCompile Include="src\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
